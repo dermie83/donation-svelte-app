@@ -1,33 +1,45 @@
 <script lang="ts">
+  import { donationService } from "$lib/services/donation-service";
+  import type { Candidate, Donation } from "$lib/types/donation-types";
+  import { currentSession, latestDonation } from "$lib/stores";
   import Coordinates from "$lib/ui/Coordinates.svelte";
-  const candidateList = [
-    {
-      firstName: "Lisa",
-      lastName: "Simpson",
-      office: "President"
-    },
-    {
-      firstName: "Maggie",
-      lastName: "Simpson",
-      office: "President"
-    },
-    {
-      firstName: "Ned",
-      lastName: "Flanders",
-      office: "President"
-    }
-  ];
+  import { get } from "svelte/store";
+
+  export let candidateList: Candidate[] = [];
+
+  let amount = 0;
   let lat = 52.160858;
   let lng = -7.15242;
-  let amount = 0;
-  let selectedCandidate = "Simpson, Lisa";
+  let selectedCandidate = "";
   let paymentMethods = ["paypal", "direct"];
-  let selectedMethod = "paypal";
-  
+  let selectedMethod = "";
+  let message = "Please donate";
 
   async function donate() {
-    console.log(`Just donated: ${amount} to ${selectedCandidate} via ${selectedMethod} payment`);
-    console.log(`lat: ${lat}, lng: ${lng}`);
+    if (selectedCandidate && amount && selectedMethod) {
+      const candidate = candidateList.find((candidate) => candidate._id === selectedCandidate);
+      if (candidate) {
+        const donation: Donation = {
+          amount: amount,
+          method: selectedMethod,
+          candidate: selectedCandidate,
+          lat: lat,
+          lng: lng,
+          donor: $currentSession._id
+        };
+        const success = await donationService.donate(donation, get(currentSession));
+        if (!success) {
+          message = "Donation not completed - some error occurred";
+          return;
+        }
+        donation.candidate = candidate;
+        donation.donor = $currentSession.name;
+        latestDonation.set(donation);
+        message = `Thanks! You donated ${amount} to ${candidate.firstName} ${candidate.lastName}`;
+      }
+    } else {
+      message = "Please select amount, method and candidate";
+    }
   }
 </script>
 
@@ -49,7 +61,7 @@
     <div class="select">
       <select bind:value={selectedCandidate}>
         {#each candidateList as candidate}
-          <option>{candidate.lastName},{candidate.firstName}</option>
+          <option value={candidate._id}>{candidate.lastName},{candidate.firstName}</option>
         {/each}
       </select>
     </div>
@@ -61,3 +73,9 @@
     </div>
   </div>
 </form>
+<div class="box mt-4">
+  <div class="content has-text-centered">
+    {message}
+  </div>
+</div>
+  
