@@ -12,7 +12,7 @@ export interface Session {
     _id?: string;
   }
 
-  export interface Candidate {
+  export interface Lighthouse {
     firstName: string;
     lastName: string;
     office: string;
@@ -22,7 +22,7 @@ export interface Session {
   export interface Donation {
     amount: number;
     method: string;
-    candidate: Candidate | string;
+    lighthouse: Lighthouse | string;
     donor: User | string;
     lat: number;
     lng: number;

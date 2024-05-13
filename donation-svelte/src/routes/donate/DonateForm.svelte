@@ -1,28 +1,28 @@
 <script lang="ts">
   import { donationService } from "$lib/services/donation-service";
-  import type { Candidate, Donation } from "$lib/types/donation-types";
+  import type { Lighthouse, Donation } from "$lib/types/donation-types";
   import { currentSession, latestDonation } from "$lib/stores";
   import Coordinates from "$lib/ui/Coordinates.svelte";
   import { get } from "svelte/store";
 
-  export let candidateList: Candidate[] = [];
+  export let lighthouseList: Lighthouse[] = [];
 
   let amount = 0;
   let lat = 52.160858;
   let lng = -7.15242;
-  let selectedCandidate = "";
+  let selectedLighthouse = "";
   let paymentMethods = ["paypal", "direct"];
   let selectedMethod = "";
   let message = "Please donate";
 
   async function donate() {
-    if (selectedCandidate && amount && selectedMethod) {
-      const candidate = candidateList.find((candidate) => candidate._id === selectedCandidate);
-      if (candidate) {
+    if (selectedLighthouse && amount && selectedMethod) {
+      const lighthouse = lighthouseList.find((lighthouse) => lighthouse._id === selectedLighthouse);
+      if (lighthouse) {
         const donation: Donation = {
           amount: amount,
           method: selectedMethod,
-          candidate: selectedCandidate,
+          lighthouse: selectedLighthouse,
           lat: lat,
           lng: lng,
           donor: $currentSession._id
@@ -32,10 +32,10 @@
           message = "Donation not completed - some error occurred";
           return;
         }
-        donation.candidate = candidate;
+        donation.lighthouse = lighthouse;
         donation.donor = $currentSession.name;
         latestDonation.set(donation);
-        message = `Thanks! You donated ${amount} to ${candidate.firstName} ${candidate.lastName}`;
+        message = `Thanks! You donated ${amount} to ${lighthouse.firstName} ${lighthouse.lastName}`;
       }
     } else {
       message = "Please select amount, method and candidate";
@@ -57,11 +57,11 @@
     </div>
   </div>
   <div class="field">
-    <label class="label" for="amount">Select Candidate:</label>
+    <label class="label" for="amount">Select Lighthouse:</label>
     <div class="select">
-      <select bind:value={selectedCandidate}>
-        {#each candidateList as candidate}
-          <option value={candidate._id}>{candidate.lastName},{candidate.firstName}</option>
+      <select bind:value={selectedLighthouse}>
+        {#each lighthouseList as lighthouse}
+          <option value={lighthouse._id}>{lighthouse.lastName},{lighthouse.firstName}</option>
         {/each}
       </select>
     </div>

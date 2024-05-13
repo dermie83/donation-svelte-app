@@ -13,7 +13,7 @@
               <span class="icon mr-5"><i class="fas fa-map-marker-alt"></i></span><span class="icon mr-4"><i class="fas fa-vote-yea"></i></span>
               <p>Donation</p>
             </h1>
-            <h2 class="subtitle is-4 mt-2">Help me run Springfield!</h2>
+            <h2 class="subtitle is-4 mt-2">Donate to Irish Lighthouses!</h2>
             <p class="has-text-centered">
               <a class="button is-medium is-success" href="/signup">
                 <span class="icon"><i class="fas fa-plus"></i></span><span>Sign Up</span>

@@ -1,4 +1,4 @@
-import type { Candidate, DataSet, Donation } from "$lib/types/donation-types";
+import type { Lighthouse, DataSet, Donation } from "$lib/types/donation-types";
 
 export function generateByMethod(donationList: Donation[]): DataSet {
   const totalByMethod: DataSet = {
@@ -21,8 +21,8 @@ export function generateByMethod(donationList: Donation[]): DataSet {
   return totalByMethod;
 }
 
-export function generateByCandidate(donationList: Donation[], candidates: Candidate[]): DataSet {
-  const donationsByCandidate: DataSet = {
+export function generateByCandidate(donationList: Donation[], lighthouses: Lighthouse[]): DataSet {
+  const donationsByLighthouse: DataSet = {
     labels: [],
     datasets: [
       {
@@ -31,21 +31,21 @@ export function generateByCandidate(donationList: Donation[], candidates: Candid
     ]
   };
 
-  donationsByCandidate.labels = [];
-  candidates.forEach((candidate) => {
-    donationsByCandidate.labels.push(`${candidate.lastName}, ${candidate.firstName}`);
-    donationsByCandidate.datasets[0].values.push(0);
+  donationsByLighthouse.labels = [];
+  lighthouses.forEach((lighthouse) => {
+    donationsByLighthouse.labels.push(`${lighthouse.lastName}, ${lighthouse.firstName}`);
+    donationsByLighthouse.datasets[0].values.push(0);
   });
 
-  candidates.forEach((candidate, i) => {
+  lighthouses.forEach((lighthouse, i) => {
     donationList.forEach((donation) => {
-      if (typeof donation.candidate !== "string") {
-        if (donation.candidate._id == candidate._id) {
-          donationsByCandidate.datasets[0].values[i] += donation.amount;
+      if (typeof donation.lighthouse !== "string") {
+        if (donation.lighthouse._id == lighthouse._id) {
+          donationsByLighthouse.datasets[0].values[i] += donation.amount;
         }
       }
     });
   });
 
-  return donationsByCandidate;
+  return donationsByLighthouse;
 }

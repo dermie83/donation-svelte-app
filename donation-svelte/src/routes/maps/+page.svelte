@@ -13,8 +13,8 @@
     onMount(async () => {
     const donations = await donationService.getDonations(get(currentSession));
     donations.forEach((donation: Donation) => {
-      if (typeof donation.candidate !== "string") {
-        const popup = `${donation.candidate.firstName} ${donation.candidate.lastName}: €${donation.amount}`;
+      if (typeof donation.lighthouse !== "string") {
+        const popup = `${donation.lighthouse.firstName} ${donation.lighthouse.lastName}: €${donation.amount}`;
         map.addMarker(donation.lat, donation.lng, popup);
       }
     });

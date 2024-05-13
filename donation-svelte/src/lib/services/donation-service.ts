@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { Session, User } from "$lib/types/donation-types";
-import type { Candidate, Donation } from "$lib/types/donation-types";
+import type { Lighthouse, Donation } from "$lib/types/donation-types";
 
 export const donationService = {
   baseUrl: "http://localhost:4000",
@@ -37,17 +37,17 @@ export const donationService = {
   async donate(donation: Donation, session: Session) {
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + session.token;
-      const response = await axios.post(this.baseUrl + "/api/candidates/" + donation.candidate + "/donations", donation);
+      const response = await axios.post(this.baseUrl + "/api/lighthouse/" + donation.lighthouse + "/donations", donation);
       return response.status == 200;
     } catch (error) {
       return false;
     }
   },
 
-  async getCandidates(session: Session): Promise<Candidate[]> {
+  async getLighthouse(session: Session): Promise<Lighthouse[]> {
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + session.token;
-      const response = await axios.get(this.baseUrl + "/api/candidates");
+      const response = await axios.get(this.baseUrl + "/api/lighthouse");
       return response.data;
     } catch (error) {
       return [];

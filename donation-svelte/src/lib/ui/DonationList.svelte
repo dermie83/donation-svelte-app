@@ -8,7 +8,7 @@
   <thead>
     <th>Amount</th>
     <th>Method</th>
-    <th>Candidate</th>
+    <th>Lighthouse</th>
     <th>Donor</th>
   </thead>
   <tbody>
@@ -21,8 +21,8 @@
           {donation.method}
         </td>
         <td>
-          {#if typeof donation.candidate !== "string"}
-            {donation.candidate.lastName}, {donation.candidate.firstName}
+          {#if typeof donation.lighthouse !== "string"}
+            {donation.lighthouse.lastName}, {donation.lighthouse.firstName}
           {/if}
         </td>
         <td>
