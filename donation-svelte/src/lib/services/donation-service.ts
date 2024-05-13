@@ -47,7 +47,7 @@ export const donationService = {
   async getLighthouse(session: Session): Promise<Lighthouse[]> {
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + session.token;
-      const response = await axios.get(this.baseUrl + "/api/lighthouse");
+      const response = await axios.get(this.baseUrl + "/api/lighthouses");
       return response.data;
     } catch (error) {
       return [];

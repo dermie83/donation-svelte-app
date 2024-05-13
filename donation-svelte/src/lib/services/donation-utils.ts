@@ -21,7 +21,7 @@ export function generateByMethod(donationList: Donation[]): DataSet {
   return totalByMethod;
 }
 
-export function generateByCandidate(donationList: Donation[], lighthouses: Lighthouse[]): DataSet {
+export function generateByLighthouse(donationList: Donation[], lighthouses: Lighthouse[]): DataSet {
   const donationsByLighthouse: DataSet = {
     labels: [],
     datasets: [
